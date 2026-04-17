@@ -1,0 +1,112 @@
+<!-- =======================================================
+     Page Mon Compte : profil utilisateur + historique commandes
+     Accessible uniquement aux utilisateurs connectés (client ou admin)
+     ======================================================= -->
+
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <h1>Mon compte</h1>
+        <!-- Salutation personnalisée remplie par compte.js -->
+        <p class="lead" id="salutationCompte"></p>
+    </div>
+</div>
+
+<div class="container py-5">
+
+    <!-- Onglets Bootstrap pour séparer les sections -->
+    <ul class="nav nav-tabs mb-4" id="ongletsCompte" role="tablist">
+        <!-- Onglet Profil -->
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="onglet-profil-tab" data-bs-toggle="tab"
+                    data-bs-target="#onglet-profil" type="button" role="tab"
+                    aria-controls="onglet-profil" aria-selected="true">
+                <i class="bi bi-person" aria-hidden="true"></i> Mon profil
+            </button>
+        </li>
+        <!-- Onglet Commandes -->
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="onglet-commandes-tab" data-bs-toggle="tab"
+                    data-bs-target="#onglet-commandes" type="button" role="tab"
+                    aria-controls="onglet-commandes" aria-selected="false">
+                <i class="bi bi-bag" aria-hidden="true"></i> Mes commandes
+            </button>
+        </li>
+        <!-- Onglet Sécurité -->
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="onglet-securite-tab" data-bs-toggle="tab"
+                    data-bs-target="#onglet-securite" type="button" role="tab"
+                    aria-controls="onglet-securite" aria-selected="false">
+                <i class="bi bi-shield-lock" aria-hidden="true"></i> Sécurité
+            </button>
+        </li>
+    </ul>
+
+    <!-- Contenu des onglets -->
+    <div class="tab-content" id="ongletsCompteContenu">
+
+        <!-- Onglet 1 : Profil -->
+        <div class="tab-pane fade show active" id="onglet-profil" role="tabpanel" aria-labelledby="onglet-profil-tab">
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Formulaire de modification du profil -->
+                    <form id="formulaireProfil" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <!-- Prénom -->
+                            <div class="col-md-6">
+                                <label for="profilPrenom" class="form-label">Prénom</label>
+                                <input type="text" class="form-control" id="profilPrenom" required>
+                                <div class="invalid-feedback">Prénom requis.</div>
+                            </div>
+                            <!-- Nom -->
+                            <div class="col-md-6">
+                                <label for="profilNom" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="profilNom" required>
+                                <div class="invalid-feedback">Nom requis.</div>
+                            </div>
+                            <!-- Email (non modifiable - sert d'identifiant) -->
+                            <div class="col-12">
+                                <label for="profilEmail" class="form-label">Adresse email</label>
+                                <input type="email" class="form-control" id="profilEmail" readonly disabled>
+                                <div class="form-text">L'email ne peut pas être modifié (identifiant).</div>
+                            </div>
+                            <!-- Adresse de livraison -->
+                            <div class="col-12">
+                                <label for="profilAdresse" class="form-label">Adresse de livraison</label>
+                                <input type="text" class="form-control" id="profilAdresse">
+                            </div>
+                            <!-- Bouton de sauvegarde -->
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle" aria-hidden="true"></i> Enregistrer les modifications
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Onglet 2 : Historique des commandes -->
+        <div class="tab-pane fade" id="onglet-commandes" role="tabpanel" aria-labelledby="onglet-commandes-tab">
+            <!-- Message si aucune commande -->
+            <div id="aucuneCommande" class="text-center py-4 d-none">
+                <i class="bi bi-bag-x display-4 text-muted" aria-hidden="true"></i>
+                <p class="mt-3">Vous n'avez passé aucune commande pour le moment.</p>
+                <a href="/catalogue" class="btn btn-primary">Découvrir la boutique</a>
+            </div>
+            <!-- Liste des commandes (accordéon Bootstrap) -->
+            <div class="accordion" id="listeCommandes">
+                <!-- Généré dynamiquement par compte.js -->
+            </div>
+        </div>
+
+        <!-- Onglet 3 : Sécurité -->
+        <div class="tab-pane fade" id="onglet-securite" role="tabpanel" aria-labelledby="onglet-securite-tab">
+            <h2 class="h5">Sécurité du compte</h2>
+            <p>Pour modifier votre mot de passe, cliquez sur le bouton ci-dessous.</p>
+            <a href="/editPassword" class="btn btn-primary">
+                <i class="bi bi-key" aria-hidden="true"></i> Modifier mon mot de passe
+            </a>
+        </div>
+    </div>
+</div>

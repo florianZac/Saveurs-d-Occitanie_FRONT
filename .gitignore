@@ -1,0 +1,18 @@
+# Dépendances npm (installées via "npm install")
+node_modules/
+
+# Fichiers compilés SCSS (à régénérer avec "npm run build")
+scss/main.css
+scss/main.css.map
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+
+# dossier Backend de l'application codé en symfony
+backend

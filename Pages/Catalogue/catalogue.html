@@ -1,0 +1,48 @@
+<!-- =======================================================
+     Page Catalogue : grille de produits avec recherche + filtre
+     ======================================================= -->
+
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <h1>Notre boutique</h1>
+        <p class="lead">Découvrez notre sélection de produits du terroir</p>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <!-- Barre de filtres -->
+        <div class="row mb-4 g-2">
+            <!-- Champ de recherche textuelle -->
+            <div class="col-md-6">
+                <label for="rechercheProduit" class="visually-hidden">Rechercher un produit</label>
+                <div class="input-group">
+                    <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
+                    <input type="search" id="rechercheProduit" class="form-control" placeholder="Rechercher un produit...">
+                </div>
+            </div>
+            <!-- Filtre par catégorie -->
+            <div class="col-md-6">
+                <label for="filtreCategorie" class="visually-hidden">Filtrer par catégorie</label>
+                <select id="filtreCategorie" class="form-select">
+                    <option value="">Toutes les catégories</option>
+                    <option value="epicerie">Épicerie fine</option>
+                    <option value="fromage">Fromages</option>
+                    <option value="vin">Vins &amp; Spiritueux</option>
+                    <option value="confiserie">Confiseries</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grille des produits (remplie dynamiquement par catalogue.js) -->
+        <!-- aria-live="polite" : les lecteurs d'écran annoncent les changements -->
+        <div id="grilleProduits" class="row g-4" aria-live="polite">
+            <!-- Les cartes produits sont générées par catalogue.js -->
+        </div>
+
+        <!-- Message affiché si aucun produit ne correspond aux filtres -->
+        <p id="aucunResultat" class="text-center text-muted mt-4 d-none" role="status">
+            Aucun produit ne correspond à votre recherche.
+        </p>
+    </div>
+</section>

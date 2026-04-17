@@ -1,0 +1,27 @@
+// =======================================================
+// Personnalisation Bootstrap : charte graphique du terroir
+// Couleurs : terracotta, ocre, olive (inspiration Sud de la France)
+// =======================================================
+
+// Redéfinition des couleurs Bootstrap AVANT l'import Bootstrap
+// (c'est important : si on importe Bootstrap avant, les variables
+// Bootstrap sont figées et on ne peut plus les modifier)
+
+// Couleur principale : terracotta profond (branding Saveurs d'Occitanie)
+$primary:   #9b3d1e;
+// Couleur secondaire : ocre doré (accents chaleureux)
+$secondary: #d9a441;
+// Couleur sombre utilisée pour la navbar et le footer
+$dark:      #392C1E;
+// Noir intense pour les textes
+$black:     #292222;
+// Success (vert olive) : retours positifs (toast, alerts)
+$success:   #6b7a3a;
+
+// Polices personnalisées (fallback vers les polices système)
+$font-family-sans-serif: "Montserrat", sans-serif !default;
+$font-family-serif:      "Hind Madurai", serif !default;
+
+// Import de Bootstrap : il doit venir APRÈS les variables
+// pour que nos couleurs remplacent celles par défaut
+@import "../node_modules/bootstrap/scss/bootstrap";

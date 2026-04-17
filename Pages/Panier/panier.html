@@ -1,0 +1,84 @@
+<!-- =======================================================
+     Page Panier : récap des articles + validation commande
+     ======================================================= -->
+
+<div class="container py-5">
+    <h1 class="mb-4">Mon panier</h1>
+
+    <!-- Bloc affiché si le panier est vide -->
+    <div id="panierVide" class="text-center py-5 d-none">
+        <i class="bi bi-cart-x display-1 text-muted" aria-hidden="true"></i>
+        <p class="lead mt-3">Votre panier est vide.</p>
+        <a href="/catalogue" class="btn btn-primary">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Retour à la boutique
+        </a>
+    </div>
+
+    <!-- Bloc affiché si le panier contient au moins un article -->
+    <div id="contenuPanier" class="row g-4 d-none">
+
+        <!-- Colonne gauche : liste des articles -->
+        <div class="col-lg-8">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <caption class="visually-hidden">Articles dans votre panier</caption>
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Produit</th>
+                            <th scope="col">Prix unitaire</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Sous-total</th>
+                            <th scope="col"><span class="visually-hidden">Actions</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lignesPanier" aria-live="polite">
+                        <!-- Lignes générées par panier.js -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Bouton pour vider entièrement le panier -->
+            <button id="btnViderPanier" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-trash" aria-hidden="true"></i> Vider le panier
+            </button>
+        </div>
+
+        <!-- Colonne droite : récapitulatif + validation -->
+        <aside class="col-lg-4" aria-labelledby="titreRecap">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 id="titreRecap" class="h5 card-title">Récapitulatif</h2>
+                    <!-- dl/dt/dd : sémantique pour liste de définitions -->
+                    <dl class="row mb-0">
+                        <dt class="col-7">Sous-total</dt>
+                        <dd class="col-5 text-end" id="sousTotal">0,00 €</dd>
+
+                        <dt class="col-7">Livraison</dt>
+                        <dd class="col-5 text-end" id="fraisLivraison">5,00 €</dd>
+
+                        <dt class="col-7 h5">Total TTC</dt>
+                        <dd class="col-5 text-end h5 text-primary" id="totalPanier">0,00 €</dd>
+                    </dl>
+                    <p class="small text-muted mb-3">Livraison offerte dès 50&nbsp;€ d'achat.</p>
+
+                    <!-- Bouton de validation (nécessite d'être connecté) -->
+                    <button class="btn btn-primary w-100" id="btnCommander">
+                        <i class="bi bi-credit-card" aria-hidden="true"></i> Passer la commande
+                    </button>
+
+                    <!-- Info affichée si non connecté -->
+                    <p id="infoConnexion" class="small text-muted text-center mt-2 d-none">
+                        <a href="/login">Connectez-vous</a> pour valider la commande.
+                    </p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Message de confirmation après validation -->
+    <div id="confirmation" class="alert alert-success text-center d-none mt-4" role="alert" tabindex="-1">
+        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        <strong>Commande validée !</strong> Merci pour votre achat (simulation).
+        <br>
+        <a href="/compte" class="alert-link">Voir mes commandes</a>
+    </div>
+</div>

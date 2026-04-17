@@ -1,0 +1,19 @@
+{
+  "name": "boutique-occitanie",
+  "version": "1.0.0",
+  "description": "Boutique en ligne SPA - Produits du terroir occitan (projet pédagogique DWWM)",
+  "type": "commonjs",
+  "main": "index.html",
+  "scripts": {
+    "sass": "sass --watch scss/main.scss scss/main.css",
+    "build": "sass scss/main.scss scss/main.css",
+    "start": "python3 -m http.server 8000"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2"
+  }
+}

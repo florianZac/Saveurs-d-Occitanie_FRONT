@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!-- Déclaration de la langue française pour l'accessibilité et le SEO -->
+<html lang="fr">
+<head>
+  <!-- Jeu de caractères UTF-8 pour supporter les accents français -->
+  <meta charset="UTF-8">
+  <!-- Responsive : adapte la vue sur mobiles et tablettes -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Description pour le référencement SEO -->
+  <meta name="description" content="Saveurs d'Occitanie - Boutique en ligne de produits du terroir occitan.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https://images.unsplash.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self';">
+
+  <!-- Préconnexion pour accélérer le chargement des polices Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Import des polices Montserrat (sans-serif) et Hind Madurai (serif) -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon explicite : utilise le fichier dans /images -->
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+  <!-- Feuille de style principale générée à partir du SCSS compilé -->
+  <link rel="stylesheet" href="scss/main.css"/>
+
+  <!-- Titre par défaut modifié dynamiquement par le Router -->
+  <title>Saveurs d'Occitanie</title>
+</head>
+<body>
+
+    <!-- En-tête : navigation présente sur toutes les pages (hors #main-page) -->
+    <header>
+      <!-- Barre de navigation Bootstrap 5 -->
+      <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark" aria-label="Navigation principale">
+        <div class="container-fluid">
+          <!-- Logo / nom de la boutique, cliquable pour revenir à l'accueil -->
+          <a class="navbar-brand fw-bold" href="/">
+            <i class="bi bi-shop" aria-hidden="true"></i> Saveurs d'Occitanie
+          </a>
+
+          <!-- Bouton "burger" pour afficher le menu sur mobile -->
+          <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarContent"
+              aria-controls="navbarContent" aria-expanded="false"
+              aria-label="Afficher ou masquer la navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Menu principal -->
+          <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <!-- Lien vers l'accueil (public) -->
+              <li class="nav-item">
+                  <a class="nav-link" href="/">Accueil</a>
+              </li>
+              <!-- Lien vers le catalogue (public) -->
+              <li class="nav-item">
+                  <a class="nav-link" href="/catalogue">Boutique</a>
+              </li>
+              <!-- Lien vers la page contact (public) -->
+              <li class="nav-item">
+                  <a class="nav-link" href="/contact">Contact</a>
+              </li>
+              <!-- "Mon compte" : visible uniquement si l'utilisateur est connecté -->
+              <li class="nav-item" data-show="connected">
+                  <a class="nav-link" href="/compte">Mon compte</a>
+              </li>
+              <!-- "Connexion" : visible uniquement si déconnecté -->
+              <li class="nav-item" data-show="disconnected">
+                  <a class="nav-link" href="/login">Connexion</a>
+              </li>
+              <!-- Bouton déconnexion : visible uniquement si connecté -->
+              <li class="nav-item" data-show="connected">
+                  <button class="nav-link btn btn-link" id="signout-btn">Déconnexion</button>
+              </li>
+              <!-- Icône panier avec badge compteur d'articles -->
+              <li class="nav-item">
+                <a class="nav-link position-relative" href="/panier" aria-label="Voir mon panier">
+                  <i class="bi bi-cart3" aria-hidden="true"></i> Panier
+                  <!-- Le compteur est mis à jour par script.js / majCompteurPanier() -->
+                  <span id="compteurPanier" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      0
+                      <span class="visually-hidden">articles dans le panier</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Zone centrale : le contenu des pages est injecté par le Router SPA -->
+    <main id="main-page">
+        <!-- Le contenu de la page injecté  par Router.js -->
+    </main>
+
+    <!-- Pied de page : coordonnées et informations légales -->
+    <footer class="bg-dark text-white text-center py-4">
+      <div class="container">
+        <div class="row">
+          <!-- Bloc description boutique -->
+          <div class="col-md-6">
+            <h3 class="text-primary">Saveurs d'Occitanie</h3>
+            <p class="small mb-0">Produits artisanaux du terroir occitan,
+              sélectionnés chez des producteurs locaux.</p>
+          </div>
+          <!-- Bloc coordonnées -->
+          <div class="col-md-6">
+            <p class="small mb-1">
+              5 rue des Arcades<br/>
+              31370 Rieumes<br/>
+              05 61 00 00 00
+            </p>
+            <p class="small mb-0">contact@saveurs-occitanie.fr</p>
+          </div>
+        </div>
+        <!-- Mentions de copyright -->
+        <p class="small mt-3 mb-0">&copy; 2026 Saveurs d'Occitanie - Projet pédagogique DWWM</p>
+      </div>
+    </footer>
+
+    <!-- Scripts : order important -->
+    <!-- 1. script.js : fonctions communes (auth, panier, utilitaires) -->
+    <script type="module" src="script/script.js"></script>
+    <!-- 2. Router.js : gestion de la navigation SPA, chargement des pages -->
+    <script type="module" src="Router/Router.js"></script>
+    <!-- 3. Bootstrap JS (composants : modals, toasts, collapse...) -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+// =======================================================
+// Feuille de style principale - compilée en main.css
+// Commande : npm run sass (watch) ou npm run build
+// =======================================================
+
+// Import Bootstrap Icons (icônes utilisées dans la navbar et les cartes)
+@import url("/node_modules/bootstrap-icons/font/bootstrap-icons.css");
+
+// Import de notre fichier custom (couleurs + variables + Bootstrap)
+@import 'custom';
+
+// -------------------------------------------------------
+// Structure globale : layout flex pour fixer le footer en bas
+// -------------------------------------------------------
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    // Couleur de fond crème : rappel des produits artisanaux
+    background-color: #fbf6ed;
+}
+
+// La zone principale prend tout l'espace disponible
+main {
+    flex: 1;
+}
+
+// -------------------------------------------------------
+// Typographie
+// -------------------------------------------------------
+p {
+    font-family: $font-family-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $font-family-sans-serif;
+}
+
+// -------------------------------------------------------
+// Section "hero" : grande image d'en-tête sur les pages
+// -------------------------------------------------------
+.hero-scene {
+    margin-bottom: 16px;
+    position: relative;
+    padding: 4rem 1rem;
+
+    // Image de fond obtenue via ::before pour pouvoir l'assombrir
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        // Image d'ambiance (marché/terroir) depuis le fichier local
+        background-image: url("/images/Occitanie.webp");
+        background-size: cover;
+        background-position: top center;
+        background-repeat: no-repeat;
+        // Assombrissement pour améliorer la lisibilité du texte blanc par dessus
+        filter: brightness(0.4);
+        // z-index négatif : place l'image en arrière-plan
+        z-index: -1;
+    }
+
+    // Tout contenu direct est remis en position relative pour passer au-dessus
+    * {
+        position: relative;
+    }
+}
+
+.hero-scene-content {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+// -------------------------------------------------------
+// Cartes produits (catalogue)
+// -------------------------------------------------------
+.carte-produit {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+
+    // Effet de survol : léger lift + ombre renforcée
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.12);
+    }
+
+    // Cadrage uniforme des images produits
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+}
+
+// Badge catégorie (vert olive via $success)
+.badge-categorie {
+    background-color: $success;
+    color: #fff;
+}
+
+// Affichage du prix : plus grand, couleur terroir
+.prix {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $primary;
+}
+
+// -------------------------------------------------------
+// Page détail produit
+// -------------------------------------------------------
+.image-produit-detail {
+    max-height: 420px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
+// -------------------------------------------------------
+// Formulaires (login, inscription, contact, compte)
+// -------------------------------------------------------
+form {
+    // Légère animation quand le formulaire est focus
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+form:focus-within {
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+}
+
+// -------------------------------------------------------
+// Accessibilité : focus visible renforcé (normes RGAA)
+// -------------------------------------------------------
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid $secondary;
+    outline-offset: 2px;
+}
+
+// -------------------------------------------------------
+// Tableau du panier : miniatures d'images
+// -------------------------------------------------------
+.table td img {
+    max-width: 60px;
+    height: auto;
+}
+
+// -------------------------------------------------------
+// Responsive : ajustements sur petits écrans
+// -------------------------------------------------------
+@media (max-width: 576px) {
+    .hero-scene {
+        padding: 2rem 1rem;
+    }
+    .hero-scene-content {
+        min-height: 180px;
+    }
+    .hero-scene h1 {
+        font-size: 2rem;
+    }
+    .carte-produit .card-img-top {
+        height: 180px;
+    }
+}

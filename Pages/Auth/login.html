@@ -1,0 +1,58 @@
+<!-- =======================================================
+     Page Connexion : formulaire de login (email + mot de passe)
+     ======================================================= -->
+
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <h1>Connexion</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form id="loginForm" class="w-100 mx-auto" style="max-width: 450px;" novalidate>
+
+        <!-- Alerte d'erreur (affichée par le JS en cas d'identifiants incorrects) -->
+        <div id="erreurLogin" class="alert alert-danger d-none" role="alert">
+            Email ou mot de passe incorrect.
+        </div>
+
+        <!-- Champ Email -->
+        <div class="mb-3">
+            <label for="EmailInput" class="form-label">Adresse email</label>
+            <input type="email" class="form-control" id="EmailInput"
+                   name="email" required
+                   placeholder="exemple@mail.fr" value="client@test.fr">
+            <div class="invalid-feedback">
+                Adresse email invalide.
+            </div>
+        </div>
+
+        <!-- Champ Mot de passe -->
+        <div class="mb-3">
+            <label for="PasswordInput" class="form-label">Mot de passe</label>
+            <div class="input-group">
+                <input type="password" class="form-control" id="PasswordInput"
+                       name="mdp" required value="Client123!">
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword" aria-label="Afficher le mot de passe">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="invalid-feedback">
+                Mot de passe requis.
+            </div>
+        </div>
+
+        <!-- Bouton de connexion -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary w-100" id="btnLogin">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Se connecter
+            </button>
+        </div>
+
+        <!-- Lien vers l'inscription -->
+        <div class="text-center pt-3">
+            <a href="/inscription">Pas encore de compte ? Inscrivez-vous ici</a>
+        </div>
+
+    </form>
+</div>

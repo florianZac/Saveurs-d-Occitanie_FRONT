@@ -1,0 +1,95 @@
+<!-- =======================================================
+     Page Inscription : création d'un nouveau compte client
+     ======================================================= -->
+
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <h1>Inscription</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <form id="inscriptionForm" class="w-100 mx-auto needs-validation" style="max-width: 600px;" novalidate>
+
+        <!-- Zone d'alerte générale (succès / erreur) -->
+        <div id="alerteInscription" class="alert d-none" role="alert"></div>
+
+        <div class="row g-3">
+            <!-- Prénom -->
+            <div class="col-md-6">
+                <label for="prenomInput" class="form-label">Prénom *</label>
+                <input type="text" class="form-control" id="prenomInput" name="prenom"
+                       required minlength="2" maxlength="50">
+                <div class="invalid-feedback">Prénom requis (2 caractères minimum).</div>
+            </div>
+            <!-- Nom -->
+            <div class="col-md-6">
+                <label for="nomInput" class="form-label">Nom *</label>
+                <input type="text" class="form-control" id="nomInput" name="nom"
+                       required minlength="2" maxlength="50">
+                <div class="invalid-feedback">Nom requis.</div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-12">
+                <label for="emailInput" class="form-label">Adresse email *</label>
+                <input type="email" class="form-control" id="emailInput" name="email" required>
+                <div class="invalid-feedback">Adresse email invalide.</div>
+            </div>
+
+            <!-- Mot de passe (avec exigences de sécurité) -->
+            <div class="col-md-6">
+                <label for="mdpInput" class="form-label">Mot de passe *</label>
+                <!-- Regex : au moins 1 minuscule, 1 majuscule, 1 chiffre, 1 spécial, 8+ caractères -->
+                <input type="password" class="form-control" id="mdpInput" name="mdp"
+                       required minlength="8"
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$">
+                <div class="form-text">
+                    Au moins 8 caractères, 1 majuscule, 1 chiffre, 1 caractère spécial.
+                </div>
+                <div class="invalid-feedback">
+                    Le mot de passe ne respecte pas les critères de sécurité.
+                </div>
+            </div>
+
+            <!-- Confirmation du mot de passe -->
+            <div class="col-md-6">
+                <label for="mdpConfirmInput" class="form-label">Confirmer le mot de passe *</label>
+                <input type="password" class="form-control" id="mdpConfirmInput" name="mdpConfirm" required>
+                <div class="invalid-feedback" id="erreurMdpConfirm">
+                    Les mots de passe ne correspondent pas.
+                </div>
+            </div>
+
+            <!-- Adresse -->
+            <div class="col-12">
+                <label for="adresseInput" class="form-label">Adresse de livraison</label>
+                <input type="text" class="form-control" id="adresseInput" name="adresse"
+                       placeholder="15 rue des Lilas, 31000 Toulouse">
+            </div>
+
+            <!-- CGU -->
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="cguInput" required>
+                    <label class="form-check-label" for="cguInput">
+                        J'accepte les conditions générales d'utilisation. *
+                    </label>
+                    <div class="invalid-feedback">Vous devez accepter les CGU.</div>
+                </div>
+            </div>
+
+            <!-- Bouton -->
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary w-100" id="btnInscription">
+                    <i class="bi bi-person-plus" aria-hidden="true"></i> Créer mon compte
+                </button>
+            </div>
+
+            <!-- Lien vers la connexion -->
+            <div class="col-12 text-center">
+                <a href="/login">Déjà inscrit ? Connectez-vous</a>
+            </div>
+        </div>
+    </form>
+</div>

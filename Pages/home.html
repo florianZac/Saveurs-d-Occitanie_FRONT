@@ -1,0 +1,85 @@
+<!-- =======================================================
+     Page d'accueil : hero + 3 sections produits
+     Injectée dans <main id="main-page"> par le Router
+     ======================================================= -->
+
+<!-- Section "hero" : grande image d'ambiance en haut de la page -->
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <!-- Titre principal (h1) : 1 seul par page pour le SEO -->
+        <h1 class="display-4 fw-bold">Le goût authentique du Sud</h1>
+        <p class="lead">Produits artisanaux sélectionnés chez des producteurs occitans.</p>
+        <!-- Lien vers le catalogue : intercepté par le Router SPA -->
+        <a href="/catalogue" class="btn btn-primary btn-lg mt-3">
+            <i class="bi bi-basket2-fill" aria-hidden="true"></i> Découvrir la boutique
+        </a>
+    </div>
+</div>
+
+<section>
+    <!-- Article 1 : présentation de la boutique -->
+    <article>
+        <div class="container pt-4">
+            <h2 class="text-center text-primary mb-4">Bienvenue chez Saveurs d'Occitanie</h2>
+            <div class="row row-cols-1 row-cols-md-2 align-items-center g-4">
+                <div class="col">
+                    <p class="text-justify">
+                        Nous sélectionnons avec soin les meilleurs produits artisanaux d'Occitanie :
+                        huiles, miels, fromages, vins et spécialités régionales, directement issus
+                        de producteurs passionnés.
+                    </p>
+                </div>
+                <div class="col">
+                    <!-- Image : lazy loading pour accélérer le premier rendu -->
+                    <img class="w-100 rounded shadow-sm"
+                         src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=800&q=80"
+                         alt="Producteur occitan" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Article 2 : circuit court -->
+    <article class="bg-dark text-white mt-4 py-4">
+        <div class="container">
+            <h2 class="text-center text-primary mb-4">Le circuit court, notre engagement</h2>
+            <div class="row row-cols-1 row-cols-md-2 align-items-center g-4">
+                <div class="col order-md-2">
+                    <p class="text-justify">
+                        Chaque produit est tracé, de la production à la livraison. Nous travaillons
+                        en direct avec les producteurs pour garantir fraîcheur, qualité et rémunération juste.
+                    </p>
+                </div>
+                <div class="col order-md-1">
+                    <img class="w-100 rounded shadow-sm"
+                         src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80"
+                         alt="Marché local" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Article 3 : livraison -->
+    <article class="pt-4 pb-5">
+        <div class="container">
+            <h2 class="text-center text-primary mb-4">Livraison rapide et soignée</h2>
+            <div class="row row-cols-1 row-cols-md-2 align-items-center g-4">
+                <div class="col">
+                    <p class="text-justify">
+                        Expédition sous 48h en emballage isotherme pour les produits frais.
+                        <strong>Livraison offerte dès 50&nbsp;€ d'achat.</strong>
+                    </p>
+                </div>
+                <div class="col">
+                    <img class="w-100 rounded shadow-sm"
+                         src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80"
+                         alt="Livraison" loading="lazy">
+                </div>
+            </div>
+            <!-- Call-to-action final -->
+            <div class="text-center pt-4">
+                <a href="/catalogue" class="btn btn-primary">Voir tous les produits</a>
+            </div>
+        </div>
+    </article>
+</section>

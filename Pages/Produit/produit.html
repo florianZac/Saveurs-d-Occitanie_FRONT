@@ -1,0 +1,20 @@
+<!-- =======================================================
+     Page Détail produit : affichée via /produit?id=X
+     Le JS récupère l'ID dans l'URL et affiche le produit correspondant
+     ======================================================= -->
+
+<div class="container py-5">
+    <!-- Fil d'Ariane pour la navigation et le SEO -->
+    <nav aria-label="Fil d'Ariane">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/catalogue">Boutique</a></li>
+            <!-- Le dernier élément est renseigné dynamiquement par produit.js -->
+            <li class="breadcrumb-item active" aria-current="page" id="filAriane">Produit</li>
+        </ol>
+    </nav>
+
+    <!-- Conteneur qui reçoit le détail du produit via JS -->
+    <article id="detailProduit" class="row g-4" aria-live="polite">
+        <!-- Contenu injecté par produit.js -->
+    </article>
+</div>

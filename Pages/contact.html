@@ -1,0 +1,99 @@
+<!-- =======================================================
+     Page Contact : formulaire avec validation HTML5 + Bootstrap
+     ======================================================= -->
+
+<div class="hero-scene text-center text-white">
+    <div class="hero-scene-content">
+        <h1>Nous contacter</h1>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <p class="lead">Une question, une suggestion ? Écrivez-nous, nous répondons sous 48h.</p>
+
+            <!-- novalidate : on désactive la validation automatique du navigateur
+                 pour laisser Bootstrap (was-validated) gérer l'affichage des erreurs -->
+            <form id="formulaireContact" class="needs-validation row g-3" novalidate>
+
+                <!-- Champ Nom -->
+                <div class="col-md-6">
+                    <label for="nom" class="form-label">Nom <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input type="text" class="form-control" id="nom" name="nom" required minlength="2" maxlength="50">
+                    <div class="invalid-feedback">Merci de saisir votre nom (2 caractères minimum).</div>
+                </div>
+
+                <!-- Champ Prénom -->
+                <div class="col-md-6">
+                    <label for="prenom" class="form-label">Prénom <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required minlength="2" maxlength="50">
+                    <div class="invalid-feedback">Merci de saisir votre prénom.</div>
+                </div>
+
+                <!-- Champ Email avec validation HTML5 -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Adresse e-mail <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">Merci de saisir une adresse e-mail valide.</div>
+                </div>
+
+                <!-- Champ Téléphone avec regex française -->
+                <div class="col-md-6">
+                    <label for="telephone" class="form-label">Téléphone</label>
+                    <input type="tel" class="form-control" id="telephone" name="telephone"
+                           pattern="^(?:\+33|0)[1-9](?:[\s.-]?\d{2}){4}$"
+                           placeholder="06 12 34 56 78">
+                    <div class="invalid-feedback">Format attendu : 06 12 34 56 78</div>
+                </div>
+
+                <!-- Select Sujet -->
+                <div class="col-12">
+                    <label for="sujet" class="form-label">Sujet <span class="text-danger" aria-hidden="true">*</span></label>
+                    <select class="form-select" id="sujet" name="sujet" required>
+                        <option value="">-- Choisir un sujet --</option>
+                        <option value="commande">Question sur une commande</option>
+                        <option value="produit">Information produit</option>
+                        <option value="livraison">Livraison</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                    <div class="invalid-feedback">Merci de sélectionner un sujet.</div>
+                </div>
+
+                <!-- Zone de message -->
+                <div class="col-12">
+                    <label for="message" class="form-label">Message <span class="text-danger" aria-hidden="true">*</span></label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required minlength="10" maxlength="1000"></textarea>
+                    <!-- Compteur de caractères mis à jour en direct par le JS -->
+                    <div class="form-text"><span id="compteurMessage">0</span>/1000 caractères</div>
+                    <div class="invalid-feedback">Votre message doit contenir au moins 10 caractères.</div>
+                </div>
+
+                <!-- Case RGPD obligatoire -->
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rgpd" name="rgpd" required>
+                        <label class="form-check-label" for="rgpd">
+                            J'accepte que mes données soient utilisées pour traiter ma demande.
+                            <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        <div class="invalid-feedback">Vous devez accepter les conditions pour envoyer le message.</div>
+                    </div>
+                </div>
+
+                <!-- Bouton envoi -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send" aria-hidden="true"></i> Envoyer le message
+                    </button>
+                </div>
+            </form>
+
+            <!-- Message de confirmation après envoi (affiché par le JS) -->
+            <div id="messageConfirmation" class="alert alert-success mt-4 d-none" role="alert" tabindex="-1">
+                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                <strong>Message envoyé !</strong> Nous vous répondrons rapidement (simulation - pas de backend).
+            </div>
+        </div>
+    </div>
+</div>
