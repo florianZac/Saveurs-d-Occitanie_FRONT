@@ -55,7 +55,7 @@ export function initContactPage() {
             message:   sanitizeString(document.getElementById('message').value)
         };
         // Log console pour démonstration (à remplacer par l'appel API)
-        console.log('Données du formulaire (simulation envoi) :', donnees);
+        console.log('Données du formulaire :', donnees);
 
         // Affichage du message de confirmation
         confirmation.classList.remove('d-none');

@@ -288,7 +288,7 @@ export function getComptes() {
 		if (donnees) return JSON.parse(donnees);
 
 		// Comptes de démonstration si la base est vide
-		// IMPORTANT : dans un vrai projet, les mots de passe seraient HACHÉS côté backend
+		// Dans un vrai projet, les mots de passe seraient HACHÉS côté backend
 		const comptesParDefaut = [
 				{
 						email: "client@test.fr",
