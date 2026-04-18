@@ -304,7 +304,7 @@ Trois onglets :
 - Champs : nom, prénom, email, téléphone (regex FR), sujet, message
 - Compteur de caractères en direct (max 1000)
 - Case RGPD obligatoire
-- Message de confirmation après envoi (simulation)
+- Message de confirmation après envoie
 
 ---
 

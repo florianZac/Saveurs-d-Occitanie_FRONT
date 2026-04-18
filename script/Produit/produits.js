@@ -1,8 +1,12 @@
 // =======================================================
-// Catalogue des produits (données simulant une API)
-// Dans un vrai projet, ces données viendraient d'un backend (Symfony, Node...)
-// via un fetch vers une API REST. Ici, on les code en dur pour l'exercice DWWM.
+// Gestion du cache produits côté front.
+// Les produits viennent maintenant de l'API Symfony (GET /api/products).
+// Ce module maintient un cache en mémoire pour éviter de recharger
+// à chaque navigation vers une page produit.
 // =======================================================
+
+import { apiGetProducts, apiGetProduct } from "../api.js";
+
 
 /**
  * Structure d'un produit :
@@ -116,11 +120,49 @@ export const PRODUITS = [
     }
 ];
 
+// Cache en mémoire vidé quand la page est rechargée complètement
+let cacheProduits = null;
+
 /**
- * Récupère un produit par son identifiant
- * @param {number} id - Identifiant du produit
- * @returns {Object|undefined}
+ * @description Récupère tous les produits avec cache.
+ * Premier appel: fetch API, ensuite ensuite cache mémoire.
+ * @returns {Promise<Array>}
  */
-export function getProduitParId(id) {
-    return PRODUITS.find(p => p.id === id);
+export async function getProduits() {
+    if (cacheProduits !== null) {
+        return cacheProduits;
+    }
+    cacheProduits = await apiGetProducts();
+    return cacheProduits;
+}
+
+/**
+ * @description Récupère un produit par son ID.
+ * Cherche d'abord dans le cache, sinon fait un appel dédié.
+ * @param {number} id
+ * @returns {Promise<Object|null>}
+ */
+export async function getProduitParId(id) {
+    const idNum = parseInt(id, 10);
+    if (isNaN(idNum)) return null;
+
+    // Si le cache existe, on y cherche
+    if (cacheProduits !== null) {
+        const trouve = cacheProduits.find(p => p.id === idNum);
+        if (trouve) return trouve;
+    }
+
+    // Sinon appel dédié utile si on arrive direct sur /produit?id=X
+    try {
+        return await apiGetProduct(idNum);
+    } catch (err) {
+        return null;
+    }
+}
+
+/**
+ * @description Invalide le cache utile après une modification admin
+ */
+export function viderCacheProduits() {
+    cacheProduits = null;
 }

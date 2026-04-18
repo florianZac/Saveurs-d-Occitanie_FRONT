@@ -1,11 +1,13 @@
 // =======================================================
 // Script de la page Inscription : création d'un nouveau compte
+// Appelle l'API Symfony POST /api/register
 // =======================================================
 
 import { enregistrerCompte, sanitizeString } from "../script.js";
+import { apiRegister } from "../api.js";
 
 /**
- * Fonction d'initialisation de la page Inscription
+ * @description Fonction d'initialisation de la page Inscription
  */
 export function initInscriptionPage() {
     // Récupération des éléments du DOM
@@ -13,12 +15,13 @@ export function initInscriptionPage() {
     const mdpInput         = document.getElementById('mdpInput');
     const mdpConfirmInput  = document.getElementById('mdpConfirmInput');
     const alerte           = document.getElementById('alerteInscription');
+    const btnSubmit       = formulaire ? formulaire.querySelector('button[type="submit"]') : null;
 
     // Sécurité
     if (!formulaire) return;
 
     /**
-     * Affiche une alerte Bootstrap (succès ou erreur)
+     * @description Affiche une alerte Bootstrap (succès ou erreur)
      * @param {string} message
      * @param {string} type - "success" ou "danger"
      */
@@ -30,8 +33,7 @@ export function initInscriptionPage() {
     }
 
     /**
-     * Vérifie que les deux mots de passe correspondent
-     * Utilise l'API HTML5 setCustomValidity pour intégrer la validation Bootstrap
+     * @description Vérifie que les deux mots de passe correspondent via setCustomValidity
      */
     function verifierCorrespondanceMdp() {
         if (mdpInput.value !== mdpConfirmInput.value) {
@@ -48,7 +50,7 @@ export function initInscriptionPage() {
     mdpConfirmInput.addEventListener('input', verifierCorrespondanceMdp);
 
     // Gestion de la soumission du formulaire
-    formulaire.addEventListener('submit', (e) => {
+    formulaire.addEventListener('submit', async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -60,34 +62,48 @@ export function initInscriptionPage() {
         }
 
         // Construction du nouveau compte
-        // Note : en production, le mot de passe serait envoyé en HTTPS au backend
-        // et haché (bcrypt) avant stockage en base
-        const nouveauCompte = {
+        // Récupération des valeurs
+        // NOTE : pas de sanitize sur le password (préserve les caractères spéciaux)
+        // Le backend fait sa propre sanitization et validation
+        const payload = {
             email:      sanitizeString(document.getElementById('emailInput').value.trim().toLowerCase()),
-            motDePasse: sanitizeString(mdpInput.value),
-            nom:        sanitizeString(document.getElementById('nomInput').value.trim()),
-            prenom:     sanitizeString(document.getElementById('prenomInput').value.trim()),
+            password:   (mdpInput.value),
+            lastname:   sanitizeString(document.getElementById('nomInput').value.trim()),
+            firstname:  sanitizeString(document.getElementById('prenomInput').value.trim()),
             role:       "client",  // Par défaut, tout nouveau compte est client
             adresse:    sanitizeString(document.getElementById('adresseInput').value.trim())
         };
 
-        // Tentative d'enregistrement (retourne false si email déjà utilisé)
-        const resultat = enregistrerCompte(nouveauCompte);
-
-        if (!resultat) {
-            afficherAlerte("Cette adresse email est déjà utilisée.", "danger");
-            return;
+        // Désactivation du bouton pendant la requête
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            var textOriginal = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Inscription...';
         }
 
-        // Inscription réussie
-        afficherAlerte("Compte créé avec succès ! Redirection vers la page de connexion...", "success");
-        formulaire.reset();
-        formulaire.classList.remove('was-validated');
+        try {
+            // Appel API : POST /api/register
+            await apiRegister(payload);
 
-        // Redirection SPA vers /login après 1,5 seconde
-        setTimeout(() => {
-            window.history.pushState({}, "", "/login");
-            window.dispatchEvent(new Event('popstate'));
-        }, 1500);
+            // Inscription réussie
+            afficherAlerte('Compte créé avec succès ! Redirection vers la connexion...', 'success');
+            formulaire.reset();
+            formulaire.classList.remove('was-validated');
+
+            // Redirection SPA vers /login après 1,5 seconde
+            setTimeout(() => {
+                window.history.pushState({}, "", "/login");
+                window.dispatchEvent(new Event('popstate'));
+            }, 1500);
+
+        } catch (err) {
+            // Erreur renvoyée par l'API (email déjà utilisé, mdp trop faible, etc.)
+            afficherAlerte(err.message, 'danger');
+        } finally {
+            if (btnSubmit) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = textOriginal;
+            }
+        }
     });
 }
