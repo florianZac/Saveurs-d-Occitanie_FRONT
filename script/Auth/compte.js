@@ -10,12 +10,6 @@ import { apiGetProfile, apiUpdateProfile, apiGetMyOrders } from "../api.js";
  * Fonction d'initialisation de la page Mon Compte
  */
 export function initComptePage() {
-    // Récupération du compte actuellement connecté
-    const compte = getCompteConnecte();
-
-    // Sécurité : si aucun compte trouvé (cookies effacés manuellement )
-    if (!compte) return;
-
     // -------------------------------------------------------
     // Onglet Profil : pré-remplissage des champs + sauvegarde
     // -------------------------------------------------------
@@ -31,7 +25,7 @@ export function initComptePage() {
     try {
         profil = await apiGetProfile();
     } catch (err) {
-        // Token expiré ou invalide → déconnexion
+        // Token expiré ou invalide déconnexion
         afficherToast(err.message, 'danger');
         if (err.message.includes('Session expirée')) {
             setTimeout(() => signout(), 1500);
@@ -51,6 +45,11 @@ export function initComptePage() {
         profilEmail.value   = sanitizeString(compte.email)   || '';
         profilAdresse.value = sanitizeString(compte.adresse) || '';
 
+        // Le || '' garantit qu'on ne met jamais "null" dans le champ
+        if (profilAdresse) {
+            profilAdresse.value = profil.adresse || '';
+        }
+
         // Gestion de la sauvegarde du profil
         formProfil.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -63,9 +62,13 @@ export function initComptePage() {
             }
 
             try {
+                // On envoie les 3 champs modifiables dont l'adresse
+                // Si le champ adresse est vide, on envoie une chaîne vide qui sera
+                // interprétée côté backend comme "effacer l'adresse"
                 await apiUpdateProfile({
                     firstname: sanitizeString(profilPrenom.value.trim()),
                     lastname:  sanitizeString(profilNom.value.trim()),
+                    adresse:   sanitizeString(profilAdresse ? profilAdresse.value.trim() : null),
                 });
                 afficherToast('Profil mis à jour avec succès');
             } catch (err) {
@@ -77,7 +80,6 @@ export function initComptePage() {
     // -------------------------------------------------------
     // Onglet Commandes : affichage en accordéon
     // -------------------------------------------------------
-
     const aucuneCommande = document.getElementById('aucuneCommande');
     const listeCommandes = document.getElementById('listeCommandes');
 
@@ -99,7 +101,7 @@ export function initComptePage() {
     }
 
     // Construction de l'accordéon
-    // NOTE : l'API renvoie déjà les commandes triées par date DESC (plus récentes en premier)
+    // l'API renvoie déjà les commandes triées par date DESC (plus récentes en premier)
     listeCommandes.innerHTML = commandes.map((cmd, idx) => {
         // Formatage de la date (l'API renvoie un ISO 8601)
         const date = new Date(cmd.date).toLocaleDateString('fr-FR', {
@@ -158,8 +160,8 @@ export function initComptePage() {
                     </button>
                 </h3>
                 <div id="cmd-${idx}"
-                        class="accordion-collapse collapse ${idx === 0 ? 'show' : ''}"
-                        data-bs-parent="#listeCommandes">
+                     class="accordion-collapse collapse ${idx === 0 ? 'show' : ''}"
+                     data-bs-parent="#listeCommandes">
                     <div class="accordion-body">
                         <div class="mb-3">
                             <strong>Livraison à :</strong> ${sanitizeString(cmd.adresseLivraison)}
@@ -188,3 +190,4 @@ export function initComptePage() {
         `;
     }).join('');
 }
+

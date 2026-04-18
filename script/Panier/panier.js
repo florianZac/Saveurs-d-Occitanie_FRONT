@@ -167,7 +167,7 @@ export async function initPanierPage() {
                 } else {
                     modifierQuantite(id, nouvelleQuantite);
                 }
-                // Re-rendu complet (pour mettre à jour les sous-totaux)
+                // Re-rendu complet pour mettre à jour les sous-totaux
                 await afficherPanier();
             });
         });
@@ -182,7 +182,7 @@ export async function initPanierPage() {
         });
     }
 
-    // Vider complètement le panier (avec demande de confirmation)
+    // Vider complètement le panier avec demande de confirmation
     btnVider.addEventListener('click', async () => {
         if (confirm('Voulez-vous vraiment vider votre panier ?')) {
             viderPanier();
@@ -200,11 +200,25 @@ export async function initPanierPage() {
             return;
         }
 
-        // Demande de l'adresse de livraison
-        // (solution simple ; tu peux remplacer par une vraie modale Bootstrap plus tard)
+        // On tente de pré-remplir l'adresse depuis le profil API.
+        // Si le profil a une adresse, elle est proposée par défaut dans le prompt.
+        // Sinon on propose un placeholder générique.
+        let adresseParDefaut = '';
+        try {
+            const profil = await apiGetProfile();
+            adresseParDefaut = profil.adresse || '';
+        } catch (err) {
+            // Profil non récupérable : on continue avec un placeholder
+            adresseParDefaut = '';
+        }
+
+        // Si on a une adresse au profil, on la propose directement.
+        // Sinon on suggère un format type pour aider l'utilisateur.
+        const adresseProposee = adresseParDefaut || '15 rue des Lilas, 31000 Toulouse';
+
         const adresseLivraison = prompt(
             "Adresse de livraison :",
-            "15 rue des Lilas, 31000 Toulouse"
+            adresseProposee
         );
         if (!adresseLivraison || adresseLivraison.trim().length < 5) {
             afficherToast('Adresse invalide, commande annulée.', 'warning');
