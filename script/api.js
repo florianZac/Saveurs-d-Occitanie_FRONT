@@ -16,7 +16,7 @@ const TOKEN_COOKIE = "accesstoken";
 // -------------------------------------------------------
 
 /**
- * Récupère le JWT depuis les cookies
+ * @description Récupère le JWT depuis les cookies
  * Dupliqué de script.js pour éviter une dépendance circulaire
  */
 function getToken() {
@@ -27,7 +27,7 @@ function getToken() {
 }
 
 /**
- * Effectue un appel fetch vers l'API et gère les erreurs de façon uniforme.
+ * @description Effectue un appel fetch vers l'API et gère les erreurs de façon uniforme.
  * @param {string} endpoint - Chemin relatif à API_BASE_URL (ex: "/products")
  * @param {Object} options - Options fetch (method, body, etc.)
  * @param {boolean} withAuth - Si true, ajoute le header Authorization
@@ -115,7 +115,7 @@ async function apiCall(endpoint, options = {}, withAuth = false) {
 // =======================================================
 
 /**
- * Inscription d'un nouveau compte.
+ * @description Inscription d'un nouveau compte.
  * POST /api/register
  * @param {Object} params - { email, password, firstname, lastname }
  * @returns {Promise<{message: string}>}
@@ -128,7 +128,7 @@ export async function apiRegister({ email, password, firstname, lastname }) {
 }
 
 /**
- * Connexion : récupère un JWT en échange d'email/password.
+ * @description Connexion : récupère un JWT en échange d'email/password.
  * POST /api/login_check
  * @param {Object} params - { email, password }
  * @returns {Promise<{token: string}>}
@@ -141,7 +141,7 @@ export async function apiLogin({ email, password }) {
 }
 
 /**
- * Récupère le profil de l'utilisateur connecté.
+ * @description Récupère le profil de l'utilisateur connecté.
  * GET /api/profile
  * @returns {Promise<{email, firstname, lastname, roles, createdAt}>}
  */
@@ -150,7 +150,7 @@ export async function apiGetProfile() {
 }
 
 /**
- * Met à jour le profil de l'utilisateur connecté.
+ * @description Met à jour le profil de l'utilisateur connecté.
  * PUT /api/profile
  * @param {Object} params - { firstname?, lastname? }
  * @returns {Promise<{message: string}>}
@@ -163,7 +163,7 @@ export async function apiUpdateProfile({ firstname, lastname }) {
 }
 
 /**
- * Change le mot de passe de l'utilisateur connecté.
+ * @description Change le mot de passe de l'utilisateur connecté.
  * POST /api/profile/password
  * @param {Object} params - { ancienMdp, nouveauMdp }
  * @returns {Promise<{message: string}>}
@@ -180,7 +180,7 @@ export async function apiChangePassword({ ancienMdp, nouveauMdp }) {
 // =======================================================
 
 /**
- * Récupère la liste de tous les produits.
+ * @description Récupère la liste de tous les produits.
  * GET /api/products
  * @returns {Promise<Array>} - Liste des produits (format API Platform)
  */
@@ -195,7 +195,7 @@ export async function apiGetProducts() {
 }
 
 /**
- * Récupère un produit par son ID.
+ * @description Récupère un produit par son ID.
  * GET /api/products/{id}
  * @param {number} id
  * @returns {Promise<Object>}
@@ -209,7 +209,7 @@ export async function apiGetProduct(id) {
 // =======================================================
 
 /**
- * Crée une commande depuis le panier (checkout).
+ * @description Crée une commande depuis le panier (checkout).
  * POST /api/orders/checkout
  * @param {Object} params - { adresseLivraison, items: [{productId, quantite}, ...] }
  * @returns {Promise<Object>}
@@ -222,10 +222,27 @@ export async function apiCheckout({ adresseLivraison, items }) {
 }
 
 /**
- * Récupère l'historique des commandes de l'utilisateur connecté.
+ * @description Récupère l'historique des commandes de l'utilisateur connecté.
  * GET /api/orders/mine
  * @returns {Promise<Array>}
  */
 export async function apiGetMyOrders() {
     return apiCall('/orders/mine', { method: 'GET' }, true);
+}
+
+// =======================================================
+// Endpoints Paiement Stripe
+// =======================================================
+
+/**
+ * @description Crée une session Stripe Checkout pour une commande existante.
+ * POST /api/payment/create-session
+ * @param {string} commandeNumero - Numéro de la commande à payer
+ * @returns {Promise<{sessionId: string, url: string}>}
+ */
+export async function apiCreatePaymentSession(commandeNumero) {
+    return apiCall('/payment/create-session', {
+        method: 'POST',
+        body: JSON.stringify({ commandeNumero }),
+    }, true);
 }

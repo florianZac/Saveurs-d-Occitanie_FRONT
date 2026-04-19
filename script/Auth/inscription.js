@@ -3,7 +3,6 @@
 // Appelle l'API Symfony POST /api/register
 // =======================================================
 
-import { enregistrerCompte, sanitizeString } from "../script.js";
 import { apiRegister } from "../api.js";
 
 /**
@@ -70,14 +69,21 @@ export function initInscriptionPage() {
             password:   (mdpInput.value),
             lastname:   sanitizeString(document.getElementById('nomInput').value.trim()),
             firstname:  sanitizeString(document.getElementById('prenomInput').value.trim()),
-            role:       "client",  // Par défaut, tout nouveau compte est client
-            adresse:    sanitizeString(document.getElementById('adresseInput').value.trim())
+           // role:       "client",  // Par défaut, tout nouveau compte est client
+            //adresse:    sanitizeString(document.getElementById('adresseInput').value.trim())
         };
 
+        // Récupération optionnelle de l'adresse si le champ existe dans le formulaire
+        const adresseInput = document.getElementById('adresseInput');
+        if (adresseInput && adresseInput.value.trim() !== '') {
+            payload.adresse = adresseInput.value.trim();
+        }
+
         // Désactivation du bouton pendant la requête
+        let textOriginal = '';
         if (btnSubmit) {
             btnSubmit.disabled = true;
-            var textOriginal = btnSubmit.innerHTML;
+            textOriginal = btnSubmit.innerHTML;
             btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Inscription...';
         }
 

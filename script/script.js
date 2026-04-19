@@ -15,8 +15,6 @@
 
 // Nom du cookie contenant le JWT
 const tokenCookieName = "accesstoken";
-const roleCookieName  = "role";
-const emailCookieName = "user_email";
 
 // Base URL de l'API (à brancher plus tard sur le backend Symfony)
 // export const apiBaseUrl = "https://api.saveurs-occitanie.fr/api";
@@ -94,45 +92,26 @@ export function eraseCookie(name) {
  * @description Encode une chaîne en Base64 URL-safe
  * @param {string} str
  * @returns {string}
- */
+ 
 function base64UrlEncode(str) {
 		return btoa(str)
 				.replace(/\+/g, '-')
 				.replace(/\//g, '_')
 				.replace(/=+$/, '');
 }
-
+*/
 /**
  * @description Décode une chaîne Base64 URL-safe
  * @param {string} str
  * @returns {string}
- */
+ 
 function base64UrlDecode(str) {
 		str = str.replace(/-/g, '+').replace(/_/g, '/');
 		while (str.length % 4) str += '=';
 		return atob(str);
-}
+}*/
 
-// =======================================================
-// Sanitization : échappement HTML pour les innerHTML
-// =======================================================
 
-/**
- * @description Échappe les caractères spéciaux HTML pour éviter les injections XSS.
- * À utiliser dans les template strings qui sont injectés via innerHTML.
- * @param {string} value
- * @returns {string}
- */
-export function sanitizeString(value) {
-		if (value === null || value === undefined) return '';
-		return String(value)
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#39;')
-				.replace(/\//g, '&#x2F;');
-}
 
 // =======================================================
 // Décodage du JWT reçu du backend Symfony
@@ -198,7 +177,7 @@ export function getRole() {
 		const payload = decodeJwtPayload(token);
 		if (!payload || !payload.roles) return null;
 
-		// Si le tableau contient ROLE_ADMIN  admin, sinon client
+		// Convention : si le tableau contient ROLE_ADMIN → admin, sinon client
 		if (Array.isArray(payload.roles) && payload.roles.includes('ROLE_ADMIN')) {
 				return 'admin';
 		}
@@ -258,10 +237,8 @@ export function showAndHideElementsForRole() {
 // Déconnexion
 // =======================================================
 export function signout() {
-		// Suppression des cookies connus
+		// Suppression du cookie JWT
 		eraseCookie(tokenCookieName);
-		eraseCookie(roleCookieName);
-		eraseCookie(emailCookieName);
 
 		// Suppression de tous les cookies résiduels (sécurité)
 		const cookies = document.cookie.split(";");
@@ -283,92 +260,30 @@ export function signout() {
 }
 
 // =======================================================
-// Gestion des comptes utilisateurs (simulation sans backend)
-// Les comptes sont stockés dans localStorage pour l'exercice.
-// Dans un vrai projet, ces fonctions feraient des appels API.
+// Sanitization : échappement HTML pour les innerHTML
 // =======================================================
 
 /**
- * Récupère la liste des comptes inscrits (avec quelques comptes de démo)
- * @returns {Array}
+ * @description Échappe les caractères spéciaux HTML pour éviter les injections XSS.
+ * À utiliser dans les template strings qui sont injectés via innerHTML.
+ * @param {string} value
+ * @returns {string}
  */
-export function getComptes() {
-		// Récupération depuis localStorage
-		const donnees = localStorage.getItem(CLE_COMPTES);
-		if (donnees) return JSON.parse(donnees);
-
-		// Comptes de démonstration si la base est vide
-		// Dans un vrai projet, les mots de passe seraient HACHÉS côté backend
-		const comptesParDefaut = [
-				{
-						email: "client@test.fr",
-						motDePasse: "Client123!",
-						nom: "Martin",
-						prenom: "Jean",
-						role: "client",
-						adresse: "15 rue des Lilas, 31000 Toulouse"
-				},
-				{
-						email: "admin@test.fr",
-						motDePasse: "Admin123!",
-						nom: "Dupont",
-						prenom: "Sophie",
-						role: "admin",
-						adresse: "1 place du Capitole, 31000 Toulouse"
-				}
-		];
-		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptesParDefaut));
-		return comptesParDefaut;
-}
-
-/**
- * Enregistre un nouveau compte (inscription)
- * @param {Object} compte
- * @returns {boolean} true si OK, false si email déjà utilisé
- */
-export function enregistrerCompte(compte) {
-		const comptes = getComptes();
-		// Vérifie si l'email existe déjà
-		if (comptes.some(c => c.email === compte.email)) {
-				return false;
-		}
-		// Ajout du nouveau compte
-		comptes.push(compte);
-		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptes));
-		return true;
-}
-
-/**
- * Met à jour un compte existant (pour changement de mot de passe, adresse...)
- * @param {string} email
- * @param {Object} modifications
- */
-export function mettreAJourCompte(email, modifications) {
-		const comptes = getComptes();
-		// Recherche du compte par email
-		const index = comptes.findIndex(c => c.email === email);
-		if (index === -1) return false;
-		// Fusion des modifications avec l'existant
-		comptes[index] = { ...comptes[index], ...modifications };
-		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptes));
-		return true;
-}
-
-/**
- * Retourne le compte actuellement connecté (ou null)
- */
-export function getCompteConnecte() {
-		const email = getEmail();
-		if (!email) return null;
-		return getComptes().find(c => c.email === email) || null;
+export function sanitizeString(value) {
+		if (value === null || value === undefined) return '';
+		return String(value)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;')
 }
 
 // =======================================================
-// Gestion du panier (localStorage)
+// Gestion du panier
 // Le panier reste local tant qu'on n'a pas fait le checkout.
 // Au moment du checkout, il est envoyé au backend via apiCheckout().
 // =======================================================
-
 
 /**
  * @description Récupère le contenu du panier depuis localStorage
@@ -538,25 +453,108 @@ function creerConteneurToasts() {
 /**
  * @description Enregistre une commande passée
  * @param {Object} commande
- */
+
 export function enregistrerCommande(commande) {
 		const commandes = getCommandes();
 		commandes.push(commande);
 		localStorage.setItem(CLE_COMMANDES, JSON.stringify(commandes));
 }
-
+ */
 /**
  * Récupère toutes les commandes (tous utilisateurs confondus)
- */
+
 export function getCommandes() {
 		const donnees = localStorage.getItem(CLE_COMMANDES);
 		return donnees ? JSON.parse(donnees) : [];
 }
-
+ */
 /**
  * Récupère uniquement les commandes d'un utilisateur (par email)
  * @param {string} email
- */
+
 export function getCommandesUtilisateur(email) {
 		return getCommandes().filter(c => c.email === email);
 }
+ */
+// =======================================================
+// Gestion des comptes utilisateurs (simulation sans backend)
+// Les comptes sont stockés dans localStorage pour l'exercice.
+// Dans un vrai projet, ces fonctions feraient des appels API.
+// =======================================================
+
+/**
+ * Récupère la liste des comptes inscrits (avec quelques comptes de démo)
+ * @returns {Array}
+
+export function getComptes() {
+		// Récupération depuis localStorage
+		const donnees = localStorage.getItem(CLE_COMPTES);
+		if (donnees) return JSON.parse(donnees);
+
+		// Comptes de démonstration si la base est vide
+		// Dans un vrai projet, les mots de passe seraient HACHÉS côté backend
+		const comptesParDefaut = [
+				{
+						email: "client@test.fr",
+						motDePasse: "Client123!",
+						nom: "Martin",
+						prenom: "Jean",
+						role: "client",
+						adresse: "15 rue des Lilas, 31000 Toulouse"
+				},
+				{
+						email: "admin@test.fr",
+						motDePasse: "Admin123!",
+						nom: "Dupont",
+						prenom: "Sophie",
+						role: "admin",
+						adresse: "1 place du Capitole, 31000 Toulouse"
+				}
+		];
+		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptesParDefaut));
+		return comptesParDefaut;
+}
+ */
+
+/**
+ * Enregistre un nouveau compte (inscription)
+ * @param {Object} compte
+ * @returns {boolean} true si OK, false si email déjà utilisé
+
+export function enregistrerCompte(compte) {
+		const comptes = getComptes();
+		// Vérifie si l'email existe déjà
+		if (comptes.some(c => c.email === compte.email)) {
+				return false;
+		}
+		// Ajout du nouveau compte
+		comptes.push(compte);
+		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptes));
+		return true;
+}
+
+/**
+ * Met à jour un compte existant (pour changement de mot de passe, adresse...)
+ * @param {string} email
+ * @param {Object} modifications
+
+export function mettreAJourCompte(email, modifications) {
+		const comptes = getComptes();
+		// Recherche du compte par email
+		const index = comptes.findIndex(c => c.email === email);
+		if (index === -1) return false;
+		// Fusion des modifications avec l'existant
+		comptes[index] = { ...comptes[index], ...modifications };
+		localStorage.setItem(CLE_COMPTES, JSON.stringify(comptes));
+		return true;
+}
+
+/**
+ * Retourne le compte actuellement connecté (ou null)
+
+export function getCompteConnecte() {
+		const email = getEmail();
+		if (!email) return null;
+		return getComptes().find(c => c.email === email) || null;
+}
+ */

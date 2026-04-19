@@ -4,7 +4,7 @@
 // =======================================================
 
 // Import des données produits
-import { PRODUITS } from "../Produit/produits.js";
+import { getProduits } from "../Produit/produits.js";
 // Import du formatage de prix (pour afficher "12,50 €")
 // Import des fonctions utilitaires (formatage, ajout panier, sanitize)
 // on importe ajouterAuPanier et afficherToast pour l'ajout direct
@@ -116,7 +116,7 @@ export function initCataloguePage() {
         const categorie = filtreCategorie.value;
 
         // Filtrage avec .filter() : on garde uniquement les produits qui matchent
-        const produitsFiltres = PRODUITS.filter(p => {
+        const produitsFiltres = tousProduits.filter(p => {
             // Match texte : présent dans le nom OU la description
             const matchTexte = p.nom.toLowerCase().includes(texte)
                             || p.description.toLowerCase().includes(texte);
